@@ -1,0 +1,27 @@
+<nav id="nav-bar" class="h-nav">
+    <a id="title" href="/">
+        <span>
+            <i class="fa-solid fa-comment-dollar"></i>
+        </span>
+        <span>
+            Expense Manager
+        </span>
+    </a>
+
+    <div id="links-container" class="v-nav">
+        <% if(locals.user){ %>
+            <a class="nav-links" href="/users/profile"><%= user.name %> </a>
+            <a class="nav-links" href="/users/sign-out">Sign Out</a>
+        <% }else{ %>
+            <a class="nav-links" href="/users/sign-in">Sign in</a>
+            <a class="nav-links" href="/users/sign-up">Sign up</a>
+        <% } %>   
+    </div>
+    <div class="burger">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+</nav>
+
+<script src="/js/nav-bar.js"></script>

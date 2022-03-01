@@ -1,0 +1,83 @@
+<link rel="stylesheet" href="/css/home.css">
+
+<% if(locals.user){ %>
+    <div id="home-expense-container">
+        <div id="toggle-button">
+            <p>
+                <div class="toggle-circle">
+                </div>
+                <span><i class="fa-solid fa-file-invoice-dollar"></i></span>
+                <span><i class="fa-solid fa-clipboard-list"></i></span>
+            </p>
+        </div>
+        <div id="expense-form-container">
+            <div id="expense-container" class="toggle-view-1">
+                <p id="expense-heading">Expenses Overview</p>
+                <div id="expense-list-container">
+                    <ul>
+                        <% for(expense of balance.expenses){ %>
+                             <%- include('_expense.ejs') %> 
+                        <% } %> 
+                    </ul>
+                    <div id="balance-container">
+                        <span>Balance =</span>
+                        <span><i class="fa-solid fa-indian-rupee-sign"></i></span>
+                        <span>
+                            <%= balance.balanceAmount %> 
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div id="form-container" class="toggle-view-2">
+                <p id="form-heading">Add a Bill</p>
+                <form action="/expense/create" id="form-input" method="post">
+                    <label for="description">Description</label>
+                    <input type="text" name="description" class="expense-input" placeholder="What did you spend on?" required>
+                    <label for="category">Category</label>
+                    <select name="category" class="expense-input" required>
+                        <option value="choose a category" selected disabled>Choose a category</option>
+                        <option value="Grocery">Grocery</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Leisure">Leisure</option>
+                        <option value="Eating out">Eating out</option>
+                        <option value="Income">Income</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <label for="amount" >Amount</label>
+                    <input type="number" class="expense-input" name="amount" placeholder="How much did you spend?" required>
+
+                    <label for="date" >Date</label>
+                    <input type="date" class="expense-input" name="date" placeholder="When did you spend?" required>
+
+                    <div id="radio-btns">
+                        <div>
+
+                            <input type="radio" name="expenseIncome" id="expense" class="expense-input" value="-" required>
+                            <label for="expense">Expense</label>
+                        </div>
+
+                        <div>
+
+                            <input type="radio" name="expenseIncome" id="income" class="expense-input" value="+" required>
+                            <label for="income">Income</label>
+                        </div>
+                    </div>
+                    <input type="hidden" name="balance" value="<%= balance._id %>">
+
+                    <button type="submit">Add Bill</button>          
+                </form>
+            </div>
+        </div>
+    </div>
+<% }else{ %> 
+    
+    <div id="home-container">
+        <h1>Welcome to Expense Manager</h1>
+        <p>An easy way to manage your expenses</p>
+        <p>Track and be in charge of your expenses</p>
+        <a href="/users/sign-up">Sign up Now!</a>
+    </div>
+<% } %> 
+
+<script src="/js/home_category.js"></script>
+<script src="/js/toggle-form.js"></script>

@@ -1,0 +1,11 @@
+<link rel="stylesheet" href="/css/profile.css">
+
+<div id="update-form-container">
+    <form action="/users/update/<%= locals.user.id %>" method="post">
+        <h1>profile page</h1>
+        <input type="text" name="name" placeholder="enter your name..." value="<%= locals.user.name %>" required>
+        <input type="text" name="email" placeholder="enter your email..." value="<%= locals.user.email %>" required>
+        <button type="submit">Update</button>
+    </form>
+</div>
+ 

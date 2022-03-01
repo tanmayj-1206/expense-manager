@@ -1,0 +1,28 @@
+<li class="expense-list">
+    <div class="category-icon" value="<%= expense.category %>"><i class="fa-solid fa-burger"></i></div>
+    <div class="expense-details">
+        <div class="category-detail">
+            <p><%= expense.category %></p>
+            <a href="/expense/delete/<%= expense.id %>"><i class="fa-solid fa-xmark"></i></a>
+        </div>
+        <div class="expense-description">
+            <%= expense.description %>
+        </div>
+        <div class="expense-amount">
+            <div class="amount">
+                <span><i class="fa-solid fa-indian-rupee-sign"></i></span>
+                <span><%= expense.amount %>:-</span>
+                <span>
+                    <% if(expense.expenseType == '+') {%>
+                        Received
+                    <% }else{ %>
+                        Spent 
+                    <% } %> 
+                </span> 
+            </div>
+            <div class="created-at" value="<%= expense.date %>">
+
+            </div>
+        </div>
+    </div>
+</li>
