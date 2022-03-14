@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="/css/dashboard.css">
+
+<div class="container mb-5">
+    
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-12 mb-3 mt-5">
+            <div class="row justify-content-between">
+                <div class="col-auto">
+                    <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#expenseFormModal">Add Bill</button>
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#balanceModal">Balance</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-12">
+            
+                <div id="expense-list-container">
+                    <ul>
+                        <% for(expense of balance.expenses){ %>
+                             <%- include('_expense.ejs') %> 
+                        <% } %> 
+                    </ul>
+                </div>
+
+        </div>
+    </div>
+</div>
+
+<%- include('_addBillModal.ejs') %> 
+
+  
+<%- include('_balanceModal') %> 
+
+<script src="/js/home_category.js"></script>

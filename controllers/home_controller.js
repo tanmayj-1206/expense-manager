@@ -2,16 +2,14 @@ const Balance = require('../model/balance')
 const Expense = require('../model/expense')
 
 module.exports.home = async function(req, res){
-    if(req.isAuthenticated())
-    {
-        let balance = await Balance.findOne({user: req.user.id}).populate({
-            path: 'expenses',
-            options: {
-                sort: '-date'
-            }
-        });
-        return res.render('home', {title: 'Home', balance: balance});
+    try{
+
+        if(req.isAuthenticated()){
+            return res.redirect('/dashboard')
+        }
+        
+        return res.render('home', {title: 'Expense Manager | Home'});
+    }catch(err){
+        console.log(err)
     }
-    
-    res.render('home', {title: 'Home'});
 }

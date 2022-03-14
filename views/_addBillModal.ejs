@@ -1,0 +1,61 @@
+<div class="modal fade" id="expenseFormModal" tabindex="-1" aria-labelledby="expenseFormModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="expenseFormModalLabel">Add Bill</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="/expense/create" id="form-input" method="post">
+                <div class="mb-3">
+
+                    <label for="description" class="form-label">Description</label>
+                    <input type="text" name="description" class="  form-control" placeholder="What did you spend on?" required>
+                </div>
+                <div class="mb-3">
+
+                    <label for="category" class="form-label">Category</label>
+                    <select name="category" class="  form-select" required>
+                        <option value="choose a category" selected disabled>Choose a category</option>
+                        <option value="Grocery">Grocery</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Leisure">Leisure</option>
+                        <option value="Eating out">Eating out</option>
+                        <option value="Income">Income</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+
+                    <label for="amount" class="form-label" >Amount</label>
+                    <input type="number" class="  form-control" name="amount" placeholder="How much did you spend/received?" required>
+                </div>
+                <div class="mb-3">
+
+                    <label for="date" class="form-label" >Date</label>
+                    <input type="date" class="  form-control" name="date" placeholder="When did you spend?" required>
+                </div>
+
+                <div id="radio-btns" class="mb-3">
+                    <div class="form-check form-check-inline">
+
+                        <input type="radio" name="expenseIncome" id="expense" class="  form-check-input" value="-" required>
+                        <label class="form-check-label" for="expense">Expense</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+ 
+                        <input type="radio" name="expenseIncome" id="income" class="  form-check-input" value="+" required>
+                        <label class="form-check-label" for="income">Income</label>
+                    </div>
+                </div>
+                <input type="hidden" name="balance" value="<%= balance._id %>">          
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" form="form-input" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>

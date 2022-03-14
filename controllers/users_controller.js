@@ -1,67 +1,165 @@
 const User = require('../model/user');
 const Balance = require('../model/balance');
+let Verification = require('../model/verification');
+const crypto = require('crypto');
+const verificationMailer = require('../mailers/verify_account');
+const resetPasswordMailer = require('../mailers/reset_password');
+let Reset = require('../model/reset_password');
+const passport = require('passport');
 
-module.exports.signIn = function(req, res){
-    if(req.isAuthenticated()){
-        return res.redirect('/users/profile');
+module.exports.signUp = async function(req, res){
+
+    try{
+        if(req.body.password != req.body.confirmPassword){
+            return res.status(422).json({
+                message: 'Password does not match'
+            });
+        }
+        console.log('b')
+        let user = await User.findOne({email: req.body.email});
+        
+        if(user){
+            return res.status(422).json({
+                message: 'Email already in use'
+            });
+        }
+        
+        user = await User.create(req.body);
+        let newUserBalance = await Balance.create({
+            balanceAmount: req.body.balance,
+            user: user._id
+        });
+        let token = crypto.randomBytes(20).toString('hex');
+        let verify = await Verification.create({
+            user: user._id,
+            token: token
+        });
+        let link = `/verify-account/${token}`
+        verificationMailer.verifyAccount(user, link);
+        if(req.xhr){
+            return res.status(200).json({
+                data: {
+                    user: user.name
+                },
+                message: 'user created'
+            });
+        }
+
+        return res.redirect('/');
+    }catch(err){
+        console.log('error in sign up', err);
     }
-
-    return res.render('sign-in', {title: 'Sign In'});
 }
 
-module.exports.signUp = function(req, res){
-    if(req.isAuthenticated()){
-        return res.redirect('/users/profile');
-    }
+module.exports.confirmVerification = async function(req, res){
+    try{
+        let token = req.params.token;
 
-    return res.render('sign-up', {title: 'Sign Up'});
+        let verify = await Verification.findOne({token: token});
+
+        if(!verify){
+            return res.render('verified', {layout: false, title: 'Expense Manager | Account verification', error: true})
+        }
+
+        let user = await User.findOneAndUpdate({_id: verify.user}, {verified: true});
+        await Verification.findOneAndDelete({token: token})
+
+        return res.render('verified', {layout: false, title: 'Expense Manager | Account verification', error: false})
+
+    }catch(err){
+        console.log(err);
+    }
 }
 
-module.exports.createNewUser = async function(req, res){
+module.exports.forgotPassword = async function(req, res){
     try{
         let user = await User.findOne({email: req.body.email});
 
-        if(user){
-            return res.redirect('back');
+        if(!user){
+            return res.status(422).json({
+                message: 'User not found'
+            });
         }
 
-        if(req.body.password != req.body.confirm_password){
-            return res.redirect('back');
+        let oldToken = await Reset.findOne({user: user._id});
+        if(oldToken){
+            console.log(oldToken)
+            return res.status(422).json({
+                message: 'Link already sent'
+            });
         }
 
-        let newUser = await User.create(req.body);
-        let newUserBalance = await Balance.create({
-            balanceAmount: req.body.balance,
-            user: newUser._id
+        let token = crypto.randomBytes(20).toString('hex');
+        let reset = await Reset.create({
+            user: user._id,
+            token: token
         });
-        return res.redirect('/users/sign-in');
+
+        console.log(reset);
+        resetPasswordMailer.resetPassword(user, token);
+
+        if(req.xhr){
+            return res.status(200).json({
+                message: 'Link sent'
+            });
+
+        }
+    }catch(err){
+        console.log(err);
     }
-    catch(err){
-        console.log('error', err);
+}
+
+module.exports.resetPasswordView = async function(req, res){
+    try{
+        let token = req.params.token;
+        let reset = await Reset.findOne({token: token});
+        
+        if(!reset){
+            return res.render('resetPassword', {layout: false, title: 'Expense Manager | Forgot password', error: true})
+        }
+        return res.render('resetPassword', {layout: false, title: 'Expense Manager | Forgot password', user: reset.user, error: false});
+    }catch(err){
+        console.log(err);
     }
 }
 
-module.exports.createSession = function(req, res){
-    res.redirect('/');
+module.exports.resetPassword = async function(req, res){
+
+    try{
+        if(req.body.password != req.body.confirmPassword){
+            return res.status(422).json({
+                message: 'Password does not match'
+            });
+        }
+        let newUser = await User.findOneAndUpdate({_id: req.body.user}, {password: req.body.password});
+        await Reset.findOneAndDelete({user: req.body.user});
+        return res.status(200).json({
+            message: 'password changed'
+        })
+    }catch(err){
+        console.log(err);
+    }
+
 }
 
-module.exports.profile = function(req, res){
-    return res.render('profile', {title: 'profile'})
+module.exports.login = function(req, res, next){
+    passport.authenticate('local', function(error, user, info){
+        if(error){
+            return res.status(500).json(error);
+        }
+        if(!user){
+            return res.status(401).json(info.message);
+        }
+        req.login(user, function(err){
+            if(err){ return next(err); }
+        })
+
+        res.json(user);
+    })(req, res, next);
+
 }
 
-module.exports.destroySession = function(req, res){
+module.exports.logout = function(req, res){
     req.logout();
-
-    return res.redirect('/');
-}
-
-module.exports.update = function(req, res){
-    if(req.user.id == req.params.id)
-    {
-        User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
-            return res.redirect('back');
-        });
-    }else{
-        return res.status(401).send('Unauthorized');
-    }
+    res.redirect('/');
 }

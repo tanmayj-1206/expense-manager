@@ -2,6 +2,19 @@ const Expense = require('../model/expense');
 const Balance = require('../model/balance');
 const e = require('express');
 
+module.exports.getDashboard = async function(req, res){
+    if(req.isAuthenticated()){
+        let balance = await Balance.findOne({user: req.user.id}).populate({
+            path: 'expenses',
+            options: {
+                sort: '-date'
+            }
+        });
+        return res.render('dashboard', {title: 'Expense Manager | Dashboard', balance: balance});
+    }
+    return res.redirect('/');
+}
+
 module.exports.create = async function(req, res){
     try{
         let balance = await Balance.findById(req.body.balance);

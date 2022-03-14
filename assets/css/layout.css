@@ -1,4 +1,4 @@
-*{
+/* *{
     margin: 0;
     padding: 0;
 }
@@ -22,4 +22,34 @@ main::before{
     width: 100%;
     opacity: 0.8;
     z-index: -1;
+} */
+
+
+html{
+    position: relative;
+    min-height: 100%;
 }
+  
+body{
+    font-family: 'Arvo', serif;
+}
+
+body::before{
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '';
+    height: 100%;
+    width: 100%;
+    background: url('../images/money-2991391.jpg') no-repeat center center/cover;
+    background-attachment: fixed;
+    z-index: -1;
+    opacity: 0.8;
+}
+
+.footer{
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+  }
