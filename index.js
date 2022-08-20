@@ -3,7 +3,7 @@ const expressLayouts = require('express-ejs-layouts')
 const db = require('./config/mongoose')
 
 const app = express()
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
