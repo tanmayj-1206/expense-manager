@@ -1,9 +1,9 @@
 const nodemailer = require('../config/nodemailer');
 
-module.exports.verifyAccount = async function(user, relLink, updateEmail){
+module.exports.verifyAccount = async function(user, link, updateEmail){
     try{
 
-        let link = `http://localhost:3000${relLink}`;
+        // let link = `http://localhost:3000${relLink}`;
         
         let htmlString = nodemailer.renderTemplate({user: user, link: link}, '/verification_mail.ejs');
         

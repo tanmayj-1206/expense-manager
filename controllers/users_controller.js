@@ -6,6 +6,7 @@ const verificationMailer = require('../mailers/verify_account');
 const resetPasswordMailer = require('../mailers/reset_password');
 let Reset = require('../model/reset_password');
 const passport = require('passport');
+const url = require('url');
 
 module.exports.signUp = async function(req, res){
 
@@ -34,7 +35,8 @@ module.exports.signUp = async function(req, res){
             user: user._id,
             token: token
         });
-        let link = `/verify-account/${token}`
+        const urlObject = url.parse(req.url, true);
+        let link = `${req.protocol}://${req.get('host')}/verify-account/${token}`
         verificationMailer.verifyAccount(user, link);
         if(req.xhr){
             return res.status(200).json({
@@ -96,7 +98,8 @@ module.exports.forgotPassword = async function(req, res){
         });
 
         console.log(reset);
-        resetPasswordMailer.resetPassword(user, token);
+        let link = `${req.protocol}://${req.get('host')}/reset-password/${token}`
+        resetPasswordMailer.resetPassword(user, link);
 
         if(req.xhr){
             return res.status(200).json({

@@ -1,8 +1,9 @@
 const nodemailer = require('../config/nodemailer');
-
-module.exports.resetPassword = async function(user, token){
+const url = require('url');
+// const urlObject = url.parse(req.url, true);
+module.exports.resetPassword = async function(user, link){
     try{   
-        let link = `http://localhost:3000/reset-password/${token}`;
+        // let link = `${req.protocol}://${req.host}/reset-password/${token}`;
         
         const htmlString = nodemailer.renderTemplate({user: user, link: link}, '/reset_password.ejs');
         

@@ -72,7 +72,7 @@ module.exports.updateEmail = async function(req, res){
             newEmail: req.body.email
         });
         user = await User.findById(req.user.id);
-        let link = `/verify-email/${token}`
+        let link = `${req.protocol}://${req.get('host')}/verify-email/${token}`
 
         verificationMailer.verifyAccount(user, link, updateEmail);
         req.logout();
