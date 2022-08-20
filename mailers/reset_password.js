@@ -7,7 +7,7 @@ module.exports.resetPassword = async function(user, token){
         const htmlString = nodemailer.renderTemplate({user: user, link: link}, '/reset_password.ejs');
         
         let info = await nodemailer.transporter.sendMail({
-            from: '"Expense Manager" <tanmayjoshi0135@gmail.com>', // sender address
+            from: '"Expense Manager" <expensemanager1206@outlook.com>', // sender address
             to: user.email, // list of receivers
             subject: "Reset Password", // Subject line
             html: htmlString, // html body

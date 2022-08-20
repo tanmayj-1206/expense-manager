@@ -3,12 +3,12 @@ const path = require('path');
 const ejs = require('ejs');
 
 let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    host: "smtp.gmail.com",
+    // service: 'hotmail',
+    host: "smtp-mail.outlook.com",
     port: 587,
     secure: false, // true for 465, false for other ports
     auth: {
-      user: 'tanmayjoshi0135', // generated ethereal user
+      user: 'expensemanager1206@outlook.com', // generated ethereal user
       pass: 'Thanos12@', // generated ethereal password
     },
 });

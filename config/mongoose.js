@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 main().catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect('mongodb://localhost:27017/expense-manager-development');
+  await mongoose.connect('mongodb+srv://tanmayj-1206:hbsCP47fuXxHjFEF@cluster0.v2kjinn.mongodb.net/?retryWrites=true&w=majority');
 }
 
 const db = mongoose.connection;

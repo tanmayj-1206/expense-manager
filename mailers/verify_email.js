@@ -8,7 +8,7 @@ module.exports.verifyAccount = async function(user, relLink, updateEmail){
         let htmlString = nodemailer.renderTemplate({user: user, link: link}, '/verification_mail.ejs');
         
         let info = await nodemailer.transporter.sendMail({
-            from: '"Expense Manager" <tanmayjoshi0135@gmail.com>', // sender address
+            from: '"Expense Manager" <expensemanager1206@outlook.com>', // sender address
             to: updateEmail.newEmail, // list of receivers
             subject: "Account verification", // Subject line
             html: htmlString, // html body
