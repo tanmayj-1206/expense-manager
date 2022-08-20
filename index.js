@@ -9,8 +9,8 @@ const port = process.env.PORT || 3000;
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 const MongoStore = require('connect-mongo');
-
-app.use(express.urlencoded());
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
