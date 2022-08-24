@@ -1,15 +1,14 @@
 const nodemailer = require("nodemailer");
 const path = require('path');
 const ejs = require('ejs');
-require('dotenv').config()
 let transporter = nodemailer.createTransport({
     // service: 'hotmail',
     host: "smtp-mail.outlook.com",
     port: 587,
     secure: false, // true for 465, false for other ports
     auth: {
-      user: process.env.user, // generated ethereal user
-      pass: process.env.password, // generated ethereal password
+      user: "expensemanager1206@outlook.com", // generated ethereal user
+      pass: "Thanos12@", // generated ethereal password
     },
 });
 

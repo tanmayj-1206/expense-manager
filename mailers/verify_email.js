@@ -1,5 +1,4 @@
 const nodemailer = require('../config/nodemailer');
-require('dotenv').config();
 module.exports.verifyAccount = async function(user, link, updateEmail){
     try{
 
@@ -7,7 +6,7 @@ module.exports.verifyAccount = async function(user, link, updateEmail){
         let htmlString = nodemailer.renderTemplate({user: user, link: link}, '/verification_mail.ejs');
         
         let info = await nodemailer.transporter.sendMail({
-            from: `"Expense Manager" <${process.env.user}>`, // sender address
+            from: `"Expense Manager" <expensemanager1206@outlook.com>`, // sender address
             to: updateEmail.newEmail, // list of receivers
             subject: "Account verification", // Subject line
             html: htmlString, // html body
